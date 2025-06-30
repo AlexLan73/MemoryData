@@ -45,6 +45,9 @@
     <ClInclude Include="include\MemoryData\MemoryProcessor.h">
       <Filter>include\MemoryData</Filter>
     </ClInclude>
+    <ClInclude Include="include\MemoryData\IMemoryConfigChannel.h">
+      <Filter>include\MemoryData</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MemoryData.cpp">

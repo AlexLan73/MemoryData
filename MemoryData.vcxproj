@@ -98,6 +98,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="include\MemoryData\IMemoryConfigChannel.h" />
     <ClInclude Include="include\MemoryData\IMemoryDataHandler.h" />
     <ClInclude Include="include\MemoryData\MemoryProcessor.h" />
     <ClInclude Include="include\MemoryData\memory_base.h" />

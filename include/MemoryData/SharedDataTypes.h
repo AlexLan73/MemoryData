@@ -7,20 +7,10 @@
 #include <cstdint>
 #include <map>
 #include <functional> // Для CallbackDataMetaData
+#include "IMemoryConfigChannel.h"
 #include <msgpack.hpp>
 
   // --- Базовые типы для IPC ---
-  enum class TypeBlockMemory { Read, Write };
-enum class ServerClient { Server, Client };
-
-using MetadataMap = std::map<std::string, std::string>;
-
-struct RecDataMetaData {
-  std::vector<uint8_t> Bytes;
-  MetadataMap MetaData;
-};
-
-using CallbackDataMetaData = std::function<void(const RecDataMetaData&)>;
 
 // --- Идентификаторы типов данных ---
 enum DataTypeIds : uint32_t {
@@ -34,15 +24,9 @@ enum DataTypeIds : uint32_t {
 };
 
 // --- Структуры данных ---
-enum class LoggerSendEnumMemory { Error = -1, Info = 0, Warning = 1 };
+//enum class LoggerSendEnumMemory { Error = -1, Info = 0, Warning = 1 };
 MSGPACK_ADD_ENUM(LoggerSendEnumMemory);
 
-struct ILogger {
-  uint32_t Id;
-  std::string Module;
-  std::string Log;
-  LoggerSendEnumMemory Code;
-};
 struct Logger :public ILogger {
   MSGPACK_DEFINE_ARRAY(Id, Module, Log, Code); // Исправлено: убран лишний символ
 };
@@ -55,16 +39,10 @@ struct Logger :public ILogger {
 //  MSGPACK_DEFINE_ARRAY(Id, Module, Log, Code); // Исправлено: убран лишний символ
 //};
 
-struct CudaVector {
-  uint32_t Id;
-  std::vector<double> Values;
+struct CudaVector:public ICudaVector{
   MSGPACK_DEFINE_ARRAY(Id, Values);
 };
 
-struct ICudaValue {
-  uint32_t Id;
-  double Value;
-};
 struct CudaValue:public ICudaValue {
   MSGPACK_DEFINE_ARRAY(Id, Value);
 };
@@ -75,28 +53,15 @@ struct CudaValue:public ICudaValue {
 //  MSGPACK_DEFINE_ARRAY(Id, Value);
 //};
 
-struct CudaDateTimeVariable {
-  uint32_t Id;
-  std::string DateTime;
-  float Variable;
+struct CudaDateTimeVariable : public ICudaDateTimeVariable {
   MSGPACK_DEFINE_ARRAY(Id, DateTime, Variable);
 };
 
-struct CudaMatrix {
-  uint32_t Id;
-  uint32_t I;
-  uint32_t J;
-  std::vector<double> Values; // Все элементы матрицы по порядку
+struct CudaMatrix :public ICudaMatrix {
   MSGPACK_DEFINE_ARRAY(Id, I, J, Values); // Исправлено: Id был дважды
 };
 
-struct RecResult {
-  uint32_t Id;
-  uint32_t NFft;
-  uint32_t MChannel;
-  double TimeFft;
-  double TimeLoadData;
-  double TimeWaiteData;
+struct RecResult :public IRecResult{
   MSGPACK_DEFINE_ARRAY(Id, NFft, MChannel, TimeFft, TimeLoadData, TimeWaiteData);
 };
 
