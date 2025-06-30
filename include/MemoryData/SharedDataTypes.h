@@ -37,13 +37,23 @@ enum DataTypeIds : uint32_t {
 enum class LoggerSendEnumMemory { Error = -1, Info = 0, Warning = 1 };
 MSGPACK_ADD_ENUM(LoggerSendEnumMemory);
 
-struct Logger {
+struct ILogger {
   uint32_t Id;
   std::string Module;
   std::string Log;
   LoggerSendEnumMemory Code;
+};
+struct Logger :public ILogger {
   MSGPACK_DEFINE_ARRAY(Id, Module, Log, Code); // Исправлено: убран лишний символ
 };
+
+//struct Logger {
+//  uint32_t Id;
+//  std::string Module;
+//  std::string Log;
+//  LoggerSendEnumMemory Code;
+//  MSGPACK_DEFINE_ARRAY(Id, Module, Log, Code); // Исправлено: убран лишний символ
+//};
 
 struct CudaVector {
   uint32_t Id;
@@ -51,11 +61,19 @@ struct CudaVector {
   MSGPACK_DEFINE_ARRAY(Id, Values);
 };
 
-struct CudaValue {
+struct ICudaValue {
   uint32_t Id;
   double Value;
+};
+struct CudaValue:public ICudaValue {
   MSGPACK_DEFINE_ARRAY(Id, Value);
 };
+
+//struct CudaValue {
+//  uint32_t Id;
+//  double Value;
+//  MSGPACK_DEFINE_ARRAY(Id, Value);
+//};
 
 struct CudaDateTimeVariable {
   uint32_t Id;
